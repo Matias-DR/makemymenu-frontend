@@ -5,23 +5,19 @@ import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
 import 'dotenv/config'
+import { SessionStrategy } from 'next-auth'
 
 export const CredentialProviderNextAuthLib = {
   adapter: MongoDBAdapter(connection, {
     databaseName: process.env.GOOGLE_MONGODB_DB
   }),
   secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    strategy: 'jwt'
-  },
-  pages: {
-    signIn: '/user/auth/sign-in',
-  },
+  session: { strategy: 'jwt' as SessionStrategy },
+  pages: { signIn: '/user/auth/sign-in' },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
     }),
     CredentialsProvider({
       name: 'credentials',
@@ -65,7 +61,7 @@ export const CredentialProviderNextAuthLib = {
         session.user = token.user
       }
       return session
-    },
+    }
   }
 }
 
