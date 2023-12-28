@@ -17,6 +17,8 @@ import {
 } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { TextInputComponent, type } from 'components/inputs'
+import { EMAIL_PATTERN, PASSWORD_PATTERN } from 'lib/constants'
 
 export default function SignIn() {
   const router = useRouter()
@@ -25,6 +27,7 @@ export default function SignIn() {
     register,
     handleSubmit,
     formState: { errors },
+    trigger
     // watch,
     // clearErrors,
     // setValue,
@@ -41,7 +44,7 @@ export default function SignIn() {
     }
   }, [status])
 
-  function openSnackbar(): void {
+  const openSnackbar = () => {
     setOpen(true)
   }
 
@@ -53,7 +56,7 @@ export default function SignIn() {
     setOpen(false)
   }
 
-  function onSubmit(data: any): void {
+  const onSubmit = (data: any) => {
     setIsSubmitting(true)
     signIn('credentials', {
       email: data.email,
@@ -73,64 +76,75 @@ export default function SignIn() {
 
   if (status !== 'unauthenticated') return <p>Cargando...</p>
 
-  return <form onSubmit={handleSubmit(onSubmit)}>
-    <TextField
-      id='email'
-      type='email'
-      label='Correo electrónico'
-      {...(register && register(
-        'email',
-        {
-          required: 'Campo requerido',
-          pattern: {
-            value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-            message: 'Correo electrónico inválido.'
-          }
-        }
-      ))}
-      error={!!errors.email}
-      helperText={<>{errors.email && errors.email.message}</>}
-      fullWidth
-    />
-    <TextField
-      id='password'
-      type='password'
-      label='Contraseña'
-      {...(register && register(
-        'password',
-        {
-          required: 'Campo requerido',
-          pattern: /^(?=.*[!-~])(?=.{8,64})/
-        }
-      ))}
-      error={!!errors.password}
-      helperText={<>{errors.password && errors.password.message}</>}
-      fullWidth
-    />
-    <LoadingButton
-      type='submit'
-      variant='contained'
-      color='primary'
-      disabled={isSubmitting}
-      loading={isSubmitting}
-      className={isSubmitting ? `cursor-progress` : ``}
-    >Iniciar Sesión</LoadingButton>
-    <Link href='/user/auth/sign-up'>
-      → Si no posee cuenta, regístrese aquí ←
-    </Link>
-    <p>También puede iniciar sesión con google</p>
-    <Button
-      type='button'
-      variant='contained'
-      color='primary'
-      onClick={() => signIn(
-        'google',
-        {
-          callbackUrl: '/',
-          redirect: true
-        }
-      )}
-    >Google</Button>
+  return <main className='w-full h-full flex justify-around items-center flex-col'>
+    <div className='w-11/12 max-w-screen-sm flex justify-center items-center flex-col'>
+      <h2 className='mb-2' >INICIO DE SESIÓN</h2>
+      <form
+        className='flex justify-center items-center flex-col divide-slate-400 bg-orange-300 rounded-md bg-opacity-25 border-solid border-2 border-red-500 pb-3'
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+      >
+        <fieldset className='border-none'>
+          <TextInputComponent
+            id='email'
+            type={type.EMAIL}
+            label='Correo electrónico'
+            register={register}
+            required='Campo requerido'
+            error={errors.email}
+            pattern={{
+              value: EMAIL_PATTERN,
+              message: 'Correo electrónico inválido.'
+            }}
+            validate={() => true}
+            trigger={trigger}
+          />
+          <TextInputComponent
+            id='password'
+            type={type.PASSWORD}
+            label='Contraseña'
+            register={register}
+            required='Campo requerido'
+            error={errors.password}
+            pattern={{
+              value: PASSWORD_PATTERN,
+              message: 'Contraseña inválida. Debe contener entre 8 a 64 caracteres.'
+            }}
+            trigger={trigger}
+          />
+        </fieldset>
+        <LoadingButton
+          type='submit'
+          variant='contained'
+          color='primary'
+          disabled={isSubmitting}
+          loading={isSubmitting}
+          className={isSubmitting ? `cursor-progress` : ``}
+        >Iniciar Sesión</LoadingButton>
+        <Link
+          className='mt-3'
+          href='/user/auth/sign-up'
+        >
+          → Regístrese aquí ←
+        </Link>
+      </form>
+        <fieldset className='flex justify-center items-center flex-col divide-slate-400 bg-orange-300 rounded-md bg-opacity-25 border-solid border-2 border-red-500 mt-3'>
+          <legend><h4 className='m-0'>O puede ingresar con</h4></legend>
+          <Button
+            className='mt-3'
+            type='button'
+            variant='contained'
+            color='primary'
+            onClick={() => signIn(
+              'google',
+              {
+                callbackUrl: '/',
+                redirect: true
+              }
+            )}
+          >Google</Button>
+        </fieldset>
+    </div>
     <Snackbar
       open={open}
       autoHideDuration={6000}
@@ -141,5 +155,5 @@ export default function SignIn() {
         {snackbarMessage}
       </Alert>
     </Snackbar>
-  </form>
+  </main >
 }

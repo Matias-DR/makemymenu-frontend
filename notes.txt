@@ -1,0 +1,6 @@
+tailwind palette 1 = {
+  1º color: lime-300    #cbf078
+  2º color: yellow-200  #f8f398
+  3º color: orange-300  #f1b963
+  4º color: red-500     #e46161
+}
