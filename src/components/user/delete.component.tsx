@@ -14,13 +14,11 @@ import {
   type
 } from 'components/inputs'
 import {
-  useSession
+  useSession,
+  signOut
 } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
-import {
-  EMAIL_PATTERN,
-  PASSWORD_PATTERN
-} from 'lib/constants'
+import { PASSWORD_PATTERN } from 'lib/constants'
 import { LoadingButton } from '@mui/lab'
 import axios from 'axios'
 import {
@@ -44,21 +42,18 @@ const style = {
   p: 4,
 }
 
-export default function UserUpdateComponent() {
+export default function UserDeleteComponent() {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const { email } = decode(session?.user.accessToken as string) as JwtPayload
   const {
     register,
     handleSubmit,
     formState: { errors },
     trigger,
-    watch
-    // clearErrors,
-    // setValue,
   } = useForm()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -77,42 +72,36 @@ export default function UserUpdateComponent() {
     setSnackbarOpen(false)
   }
 
-  function onSubmit(data: any): void {
+  const onSubmit = async (data: any): Promise<void> => {
     setIsSubmitting(true)
-    axios.patch('/api/user/update', {
-      newEmail: data.newEmail,
-      newPassword: data.newPassword,
-      newPasswordConfirmation: data.newPasswordConfirmation,
-      password: data.password
-    }, {
-      headers: {
-        Authorization: `Bearer ${session?.user?.accessToken as string}`
-      }
-    })
-      .then(async (res: any) => {
-        console.log('RES', res.data)
-        session!.user.accessToken = res.data.accessToken
-        session!.user.refreshToken = res.data.refreshToken
-        await update({
-          ...session,
-          user: {
-            ...session!.user,
-            accessToken: res.data.accessToken
-          }
-        })
+    let result
+    if (session!.provider === 'credentials') {
+      result = await axios.post(
+        '/api/user/delete',
+        { password: data.password },
+        { headers: { Authorization: `Bearer ${session!.user.accessToken}` } }
+      ).then(async (res: any) => {
         setStatus('success')
-        setSnackbarMessage('Datos actualizados correctamente')
+        setSnackbarMessage('Usuario eliminado correctamente')
         openSnackbar()
         setIsSubmitting(false)
+        return res
       })
-      .catch((error: any) => {
+      .catch((err: any) => {
         setStatus('error')
-        if (error && error.response && error.response.data) {
-          setSnackbarMessage(error.response.data || 'Error al actualizar los datos.')
-          openSnackbar()
-        }
+        setSnackbarMessage(err.response.data)
+        openSnackbar()
         setIsSubmitting(false)
+        return err.response.data
       })
+    } else {
+      result = await axios.post(
+        '/api/user/provider-delete',
+        { provider: session!.provider },
+        { headers: { Authorization: `Bearer ${session!.user.id_token}` } }
+      )
+    }
+    if (result.status === 200) signOut()
   }
 
   return (
@@ -122,7 +111,7 @@ export default function UserUpdateComponent() {
         variant='contained'
         color='primary'
         onClick={handleOpen}
-      >{ email }</Button>
+      >Eliminar usuario</Button>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -144,47 +133,11 @@ export default function UserUpdateComponent() {
             >
               <fieldset>
                 <TextInputComponent
-                  id='newEmail'
-                  type={type.EMAIL}
-                  label='Nuevo email'
-                  register={register}
-                  required={false}
-                  error={errors.newEmail}
-                  pattern={{ value: EMAIL_PATTERN, message: 'Email inválido' }}
-                  trigger={trigger}
-                />
-                <TextInputComponent
-                  id='newPassword'
-                  type={type.PASSWORD}
-                  label='Nueva contraseña'
-                  register={register}
-                  required={false}
-                  error={errors.newPassword}
-                  pattern={{ value: PASSWORD_PATTERN, message: 'Contraseña inválida' }}
-                  trigger={trigger}
-                />
-                <TextInputComponent
-                  id='newPasswordConfirmation'
-                  type={type.PASSWORD}
-                  label='Confirmación de nueva contraseña'
-                  register={register}
-                  required={watch('newPassword') !== undefined && watch('newPassword') !== ''}
-                  error={errors.newPasswordConfirmation}
-                  validate={(value: string) => value === watch('newPassword')
-                    || 'Las contraseñas no coinciden'}
-                  pattern={{ value: PASSWORD_PATTERN, message: 'Confirmación de contraseña inválida' }}
-                  trigger={trigger}
-                />
-                <TextInputComponent
                   id='password'
                   type={type.PASSWORD}
                   label='Contraseña actual'
                   register={register}
-                  required={
-                    watch('newPassword') !== '' && watch('newPassword') !== undefined && watch('newPassword') !== null
-                    || watch('newEmail') !== '' && watch('newEmail') !== undefined && watch('newEmail') !== null
-                    || watch('newPasswordConfirmation') !== '' && watch('newPasswordConfirmation') !== undefined && watch('newPasswordConfirmation') !== null ? 'Ingrese la contraseña actual' : false
-                  }
+                  required={false}
                   error={errors.password}
                   pattern={{ value: PASSWORD_PATTERN, message: 'Contraseña inválida' }}
                   trigger={trigger}
@@ -197,9 +150,9 @@ export default function UserUpdateComponent() {
                 disabled={isSubmitting}
                 loading={isSubmitting}
                 className={isSubmitting ? `cursor-progress` : ``}
-              >Actualizar</LoadingButton>
+              >Confirmar</LoadingButton>
             </form>
-            <Button onClick={handleClose}>Volver</Button>
+            <Button onClick={handleClose}>Cancelar</Button>
           </Box>
         </Fade>
       </Modal>

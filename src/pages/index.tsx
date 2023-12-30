@@ -7,6 +7,7 @@ import { Button } from '@mui/material'
 import Link from 'next/link'
 import axios from 'axios'
 import UserUpdateComponent from 'components/user/update.component'
+import UserDeleteComponent from 'components/user/delete.component'
 
 export default function Home() {
   const session = useSession()
@@ -40,29 +41,7 @@ export default function Home() {
             color='primary'
             onClick={() => signOut()}
           >Cerrar Sesión</Button>
-          <Button
-            type='button'
-            variant='contained'
-            color='primary'
-            onClick={async () => {
-              // tiene que ingresar la contra si es credentials
-              let result
-              if (session.data!.provider === 'credentials') {
-                result = await axios.post(
-                  '/api/user/delete',
-                  { password: '123123123' },
-                  { headers: { Authorization: `Bearer ${session.data!.user.accessToken}` } }
-                )
-              } else {
-                result = await axios.post(
-                  '/api/user/provider-delete',
-                  { provider: session.data!.provider },
-                  { headers: { Authorization: `Bearer ${session.data!.user.id_token}` } }
-                )
-              }
-              if (result.status === 200) signOut()
-            }}
-          >Eliminar usuario</Button>
+          <UserDeleteComponent />
           <UserUpdateComponent />
         </>
     }

@@ -49,27 +49,32 @@ export const CredentialProviderNextAuthLib = {
     })
   ],
   callbacks: {
-    jwt: async (all: any) => {
-      const { token, user, account } = all
-      if (user) {
-        token.provider = account.provider
-        if (token.provider !== 'credentials') {
-          token.user = { id_token: account.id_token }
-        } else {
-          token.user = {
-            accessToken: user.accessToken,
-            refreshToken: user.refreshToken
+    jwt: async ({ token, user, session, account, trigger }: any) => {
+      if (trigger === 'update') {
+        console.log('LLEGA TOKEN', token)
+        console.log('LLEGA SESSION', session.user)
+        token.user = {
+          accessToken: session.user.accessToken,
+          refreshToken: session.user.refreshToken
+        }
+      } else {
+        if (user) {
+          token.provider = account.provider
+          if (token.provider !== 'credentials') {
+            token.user = { id_token: account.id_token }
+          } else {
+            token.user = {
+              accessToken: user.accessToken,
+              refreshToken: user.refreshToken
+            }
           }
         }
       }
       return token
     },
-    session: async (all: any) => {
-      const { token, session } = all
-      if (token) {
-        session.provider = token.provider
-        session.user = token.user
-      }
+    session: async ({ token, session }: any) => {
+      session.provider = token.provider
+      session.user = token.user
       return session
     }
   },
