@@ -50,7 +50,14 @@ export default function UserUpdateComponent() {
   const handleClose = () => setOpen(false)
 
   const { data: session, update } = useSession()
-  const { email } = decode(session?.user.accessToken as string) as JwtPayload
+
+  let email
+  if (session!.provider === 'credentials') {
+    email = (decode(session?.user.accessToken as string) as JwtPayload).email
+  } else {
+    email = session!.user.email
+  }
+
   const {
     register,
     handleSubmit,
@@ -90,7 +97,6 @@ export default function UserUpdateComponent() {
       }
     })
       .then(async (res: any) => {
-        console.log('RES', res.data)
         session!.user.accessToken = res.data.accessToken
         session!.user.refreshToken = res.data.refreshToken
         await update({
@@ -122,7 +128,7 @@ export default function UserUpdateComponent() {
         variant='contained'
         color='primary'
         onClick={handleOpen}
-      >{ email }</Button>
+      >Modificar usuario</Button>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'

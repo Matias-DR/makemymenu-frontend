@@ -48,7 +48,14 @@ export default function UserDeleteComponent() {
   const handleClose = () => setOpen(false)
 
   const { data: session } = useSession()
-  const { email } = decode(session?.user.accessToken as string) as JwtPayload
+
+  let email
+  if (session!.provider === 'credentials') {
+    email = (decode(session?.user.accessToken as string) as JwtPayload).email
+  } else {
+    email = session!.user.email
+  }
+
   const {
     register,
     handleSubmit,

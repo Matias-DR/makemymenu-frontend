@@ -1,13 +1,7 @@
-import {
-  useSession,
-  signOut,
-  getSession
-} from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { Button } from '@mui/material'
 import Link from 'next/link'
-import axios from 'axios'
-import UserUpdateComponent from 'components/user/update.component'
-import UserDeleteComponent from 'components/user/delete.component'
+import HeaderComponent from 'components/header.component'
 
 export default function Home() {
   const session = useSession()
@@ -15,35 +9,25 @@ export default function Home() {
   if (session.status === 'loading') return <main><p>Cargando...</p></main>
 
   return <main className='h-full w-full'>
+    <HeaderComponent />
     {
-      session.status === 'unauthenticated' ?
-        <>
-          <Link href='/user/auth/sign-in'>
-            <Button
-              type='button'
-              variant='contained'
-              color='primary'
-            >Iniciar Sesión</Button>
-          </Link>
-          <Link href='/user/auth/sign-up'>
-            <Button
-              type='button'
-              variant='contained'
-              color='primary'
-            >Registrarse</Button>
-          </Link>
-        </>
-        :
-        <>
+      session.status === 'unauthenticated' &&
+      <>
+        <Link href='/user/auth/sign-in'>
           <Button
             type='button'
             variant='contained'
             color='primary'
-            onClick={() => signOut()}
-          >Cerrar Sesión</Button>
-          <UserDeleteComponent />
-          <UserUpdateComponent />
-        </>
+          >Iniciar Sesión</Button>
+        </Link>
+        <Link href='/user/auth/sign-up'>
+          <Button
+            type='button'
+            variant='contained'
+            color='primary'
+          >Registrarse</Button>
+        </Link>
+      </>
     }
   </main>
 }

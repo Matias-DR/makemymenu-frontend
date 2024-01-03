@@ -51,21 +51,24 @@ export const CredentialProviderNextAuthLib = {
   callbacks: {
     jwt: async ({ token, user, session, account, trigger }: any) => {
       if (trigger === 'update') {
-        console.log('LLEGA TOKEN', token)
-        console.log('LLEGA SESSION', session.user)
         token.user = {
           accessToken: session.user.accessToken,
-          refreshToken: session.user.refreshToken
+          refreshToken: session.user.refreshToken,
+          image: session.user.image,
         }
       } else {
         if (user) {
           token.provider = account.provider
           if (token.provider !== 'credentials') {
-            token.user = { id_token: account.id_token }
+            token.user = {
+              id_token: account.id_token,
+              image: account.image,
+            }
           } else {
             token.user = {
               accessToken: user.accessToken,
-              refreshToken: user.refreshToken
+              refreshToken: user.refreshToken,
+              image: user.image
             }
           }
         }
@@ -79,25 +82,35 @@ export const CredentialProviderNextAuthLib = {
     }
   },
   events: {
-    async signOut({ token, session }: any) {
-      const accessToken = token.user.accessToken
-      const result = await axios.delete(
-        `${HOST}/session/access`,
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      )
-        .then((res: any) => {
-          ;
-        })
-        .catch((error: any) => {
-          if (error && error.response && error.response.data) {
-            throw new Error(error.response.data)
-          }
-        })
-      return result
+    async signOut({ token }: any) {
+      if (token.provider === 'credentials') {
+        const accessToken = token.user.accessToken
+        const result = await axios.delete(
+          `${HOST}/session/access`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        )
+          .then((res: any) => {
+            ;
+          })
+          .catch((error: any) => {
+            if (error && error.response && error.response.data) {
+              throw new Error(error.response.data)
+            }
+          })
+        return result
+      } else {
+        return true
+      }
     },
     async signIn({ user, account, profile, isNewUser }: any) {
+      if (account && account.provider !== 'credentials') {
+        return {
+          provider: account.provider,
+          image: user.image
+        }
+      }
       return await axios.post(
-        `${HOST}/auth/provider`,
+        `${HOST}/auth`,
         { email: user.email }
       )
         .then((res: any) => {
