@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material'
+import { TextField, styled } from '@mui/material'
 import {
   useEffect,
   useState
@@ -24,35 +24,53 @@ interface Pattern {
 }
 
 interface Props {
+  variant: 'filled' | 'outlined' | 'standard'
   className?: string
   id: string
   type: type
-  label: string
+  label?: string
   register: UseFormRegister<any>
-  required: boolean | string
+  placeholder?: string
+  value?: string
+  required?: boolean | string
   error?: any
   pattern?: Pattern
   validate?: (value: string) => boolean | string
   trigger?: UseFormTrigger<any>
+  textColor?: string
+  borderColor?: string
+  labelColor?: string
+  placeholderColor?: string
+  textAlign?: 'center' | 'left' | 'right'
 }
 
 export const TextInputComponent = ({
+  variant = 'outlined',
   className,
   id,
   type,
   label,
   register,
+  placeholder,
+  value,
   error,
   required,
   pattern,
   validate,
-  trigger
+  trigger,
+  textColor = '#FFFFFF',
+  borderColor = '#FFFFFF',
+  labelColor = '#FFFFFF',
+  placeholderColor = '#FFFFFF',
+  textAlign = 'left'
 }: Props) => {
   const [hasBlurred, setHasBlurred] = useState(false)
 
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
 
   return <TextField
+    color='warning'
+    variant={variant}
     className={`mt-2 ${className}`}
     id={id}
     type={type}
@@ -65,6 +83,8 @@ export const TextInputComponent = ({
         if (hasBlurred) trigger && trigger(id)
       }
     }))}
+    value={value}
+    placeholder={placeholder}
     error={!!error}
     helperText={<>{error && error.message}</>}
     onBlur={() => {
@@ -72,5 +92,25 @@ export const TextInputComponent = ({
       trigger && trigger(id)
     }}
     fullWidth
+    sx={{
+      '& .MuiInput-input': { borderColor },
+      '& .MuiTextField-root': { borderColor },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': { borderColor },
+        '&:hover fieldset': { borderColor },
+        '&.Mui-focused fieldset': { borderColor },
+      },
+      '& .MuiInputBase-input': { textAlign },
+      '& .MuiInput-underline:after': { borderBottomColor: borderColor },
+      '& .MuiInput-underline:before': { borderBottomColor: borderColor },
+      '& label': { color: labelColor },
+      '& label.Mui-focused': { color: textColor },
+      '& input': { color: textColor },
+      '& input::placeholder': { color: placeholderColor },
+      '& input:focus': { color: textColor },
+      '& input:focus::placeholder': { color: placeholderColor },
+      '& input:focus-visible': { color: textColor },
+      '& input:focus-visible::placeholder': { color: placeholderColor }
+    }}
   />
 }

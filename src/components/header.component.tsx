@@ -92,7 +92,12 @@ export default function HeaderComponent() {
               <Link href='/recipe/history'>Historial de recetas</Link>
             </MenuItem>
           </Menu>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1 }}
+            className='font-bold'
+          >
             MakeMyMenu
           </Typography>
           {/* ↑ LADO IZQUIERDO ↑ */}

@@ -3,6 +3,7 @@ import type { Config } from 'tailwindcss'
 const config: Config = {
   content: [
     './src/pages/user/**/index.tsx',
+    './src/pages/recipe/**/index.tsx',
     './src/components/**/*.tsx',
   ],
   corePlugins: {
