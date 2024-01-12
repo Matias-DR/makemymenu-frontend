@@ -37,6 +37,7 @@ import {
   addCustomIngredients,
   addIngredients
 } from 'redux-store/states/ingredients'
+import LoadingWindowComponent from 'components/loading-window.component'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -104,7 +105,7 @@ export default function Home() {
     }
   }, [session, ingredients])
 
-  if (session.status === 'loading') return <main><p>Cargando...</p></main>
+  if (session.status === 'loading') return <LoadingWindowComponent />
 
   let meatIngredients: JSX.Element[] = []
   Object.keys(INGREDIENTS.meats).

@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { TextInputComponent, type } from 'components/inputs'
 import { EMAIL_PATTERN, PASSWORD_PATTERN, css } from 'lib/constants'
+import LoadingWindowComponent from 'components/loading-window.component'
 
 export default function SignIn() {
   const router = useRouter()
@@ -74,7 +75,7 @@ export default function SignIn() {
       })
   }
 
-  if (status !== 'unauthenticated') return <p>Cargando...</p>
+  if (status !== 'unauthenticated') return <LoadingWindowComponent/>
 
   return <main className='w-full h-full flex justify-around items-center flex-col'>
     <div className='w-11/12 max-w-screen-sm flex justify-center items-center flex-col'>

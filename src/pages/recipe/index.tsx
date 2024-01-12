@@ -17,6 +17,7 @@ import { TextInputComponent, type } from 'components/inputs'
 import { useForm } from 'react-hook-form'
 import { Button, Grid } from '@mui/material'
 import { css } from 'lib/constants'
+import LoadingWindowComponent from 'components/loading-window.component'
 
 export default function Home() {
   const session = useSession()
@@ -82,7 +83,7 @@ export default function Home() {
     }
   }, [session])
 
-  if (session.status === 'loading') return <main><p>Cargando...</p></main>
+  if (session.status === 'loading') return <LoadingWindowComponent/>
 
   return <main className='h-full w-full flex flex-col'>
     <HeaderComponent />

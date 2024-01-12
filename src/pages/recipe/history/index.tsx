@@ -15,6 +15,7 @@ import axios from 'axios'
 import { getServerSession } from 'next-auth/next'
 import authOptions from 'pages/api/auth/[...nextauth]'
 import { JwtPayload, decode } from 'jsonwebtoken'
+import LoadingWindowComponent from 'components/loading-window.component'
 
 interface RecipeComponentInterface {
   title: string
@@ -103,7 +104,7 @@ export default function Home({ recipeList }: Props) {
     //   })
   }, [])
 
-  if (session.status === 'loading') return <main><p>Cargando...</p></main>
+  if (session.status === 'loading') return <LoadingWindowComponent/>
 
   const handleModify = () => {
     // change button to save

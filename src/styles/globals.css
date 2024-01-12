@@ -53,6 +53,29 @@
   font-weight: 900;
 }
 
+@keyframes moveBackground {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.loading {
+  animation: fadeInOut 2s infinite;
+}
+
 /* * {
   font-family: 'Kalam', sans-serif;
 } */
@@ -86,16 +109,6 @@ h6 {
   font-family: 'sans-serif';
   font-weight: 900;
   color: white
-}
-
-@keyframes moveBackground {
-  from {
-    background-position: 100% 0;
-  }
-
-  to {
-    background-position: 0 0;
-  }
 }
 
 #__next {

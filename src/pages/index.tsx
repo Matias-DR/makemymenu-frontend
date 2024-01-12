@@ -2,11 +2,12 @@ import { useSession } from 'next-auth/react'
 import { Button } from '@mui/material'
 import Link from 'next/link'
 import HeaderComponent from 'components/header.component'
+import LoadingWindowComponent from 'components/loading-window.component'
 
 export default function Home() {
   const session = useSession()
 
-  if (session.status === 'loading') return <main><p>Cargando...</p></main>
+  if (session.status === 'loading') return <LoadingWindowComponent />
 
   return <main className='flex flex-col h-full w-full'>
     <HeaderComponent />
