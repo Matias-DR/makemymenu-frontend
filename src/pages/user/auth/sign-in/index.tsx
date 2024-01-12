@@ -113,7 +113,7 @@ export default function SignIn() {
               message: 'Contraseña inválida. Debe contener entre 8 a 64 caracteres.'
             }}
             trigger={trigger}
-            className='mb-5'
+            className='mb-3'
           />
         </fieldset>
         <LoadingButton

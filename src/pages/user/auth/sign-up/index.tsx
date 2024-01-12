@@ -152,7 +152,6 @@ export default function SignUp() {
             validate={(value: string) => value === watch('password')
               || 'Las contraseñas no coinciden'}
             trigger={trigger}
-            className='mb-5'
           />
         </fieldset>
         <LoadingButton
