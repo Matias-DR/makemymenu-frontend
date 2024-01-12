@@ -2,9 +2,11 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
-    './src/pages/user/**/index.tsx',
-    './src/pages/recipe/**/index.tsx',
+    './src/pages/**/*.tsx',
+    './src/pages/*.tsx',
     './src/components/**/*.tsx',
+    './src/components/*.tsx',
+    './src/components/user/update.component.tsx',
   ],
   corePlugins: {
     preflight: false,

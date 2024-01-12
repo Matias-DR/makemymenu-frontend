@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form'
 import {
   Snackbar,
-  Alert
+  Alert,
+  Button
 } from '@mui/material'
 import axios from 'axios'
 import {
@@ -18,7 +19,7 @@ import {
   TextInputComponent,
   type
 } from 'components/inputs'
-import { EMAIL_PATTERN, PASSWORD_PATTERN } from 'lib/constants'
+import { EMAIL_PATTERN, PASSWORD_PATTERN, css } from 'lib/constants'
 
 export default function SignUp() {
   const router = useRouter()
@@ -104,11 +105,12 @@ export default function SignUp() {
     {/* {poster()} */}
 
     <div className='w-11/12 max-w-screen-sm flex justify-center items-center flex-col py-3'>
-      <h2 className='mb-2'>REGISTRO</h2>
+      <h2 className='mb-2 text-4xl'>REGISTRO</h2>
       <form
-        className='flex justify-center items-center flex-col divide-slate-400 bg-orange-300 rounded-md bg-opacity-25 border-solid border-2 border-red-500 pb-3'
+        className='flex justify-center items-center flex-col divide-slate-400 rounded-md border-solid border-2 border-red-500 pb-3'
         onSubmit={handleSubmit(onSubmit)}
         noValidate
+        style={css.blackTransparent}
       >
         <fieldset className='border-none'>
           <TextInputComponent
@@ -124,6 +126,7 @@ export default function SignUp() {
             }}
             validate={() => true}
             trigger={trigger}
+            className='mb-5'
           />
           <TextInputComponent
             id='password'
@@ -137,6 +140,7 @@ export default function SignUp() {
               message: 'Contraseña inválida. Debe contener entre 8 a 64 caracteres.'
             }}
             trigger={trigger}
+            className='mb-5'
           />
           <TextInputComponent
             id='passwordConfirmation'
@@ -148,6 +152,7 @@ export default function SignUp() {
             validate={(value: string) => value === watch('password')
               || 'Las contraseñas no coinciden'}
             trigger={trigger}
+            className='mb-5'
           />
         </fieldset>
         <LoadingButton
@@ -158,7 +163,7 @@ export default function SignUp() {
           className='mt-3'
         >Registrarse</LoadingButton>
         <Link href='/user/auth/sign-in' className='mt-3'>
-          → Inicie sesión aquí ←
+          <Button>→ Inicie sesión aquí ←</Button>
         </Link>
       </form>
     </div>

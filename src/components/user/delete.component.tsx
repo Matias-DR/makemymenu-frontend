@@ -18,7 +18,7 @@ import {
   signOut
 } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
-import { PASSWORD_PATTERN } from 'lib/constants'
+import { PASSWORD_PATTERN, css } from 'lib/constants'
 import { LoadingButton } from '@mui/lab'
 import axios from 'axios'
 import {
@@ -35,11 +35,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
 }
 
 export default function UserDeleteComponent() {
@@ -94,13 +89,13 @@ export default function UserDeleteComponent() {
         setIsSubmitting(false)
         return res
       })
-      .catch((err: any) => {
-        setStatus('error')
-        setSnackbarMessage(err.response.data)
-        openSnackbar()
-        setIsSubmitting(false)
-        return err.response.data
-      })
+        .catch((err: any) => {
+          setStatus('error')
+          setSnackbarMessage(err.response.data)
+          openSnackbar()
+          setIsSubmitting(false)
+          return err.response.data
+        })
     } else {
       result = await axios.post(
         '/api/user/provider-delete',
@@ -115,7 +110,6 @@ export default function UserDeleteComponent() {
     <div>
       <Button
         type='button'
-        variant='contained'
         color='primary'
         onClick={handleOpen}
       >Eliminar usuario</Button>
@@ -133,12 +127,30 @@ export default function UserDeleteComponent() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={{
+            ...style,
+            display: 'flex',
+            flexDirection: 'column',
+            placeContent: 'space-evenly',
+            alignItems: 'center',
+          }}>
+            <h3 style={{
+              margin: '0',
+              fontSize: '2rem',
+            }} >ELIMINACIÓN</h3>
             <form
               noValidate
               onSubmit={handleSubmit(onSubmit)}
+              style={{
+                ...css.blackTransparent,
+                padding: '.1rem',
+                paddingLeft: '1.1rem',
+                paddingRight: '1.1rem',
+                paddingTop: '1rem',
+                paddingBottom: '.7rem',
+              }}
             >
-              <fieldset>
+              <fieldset style={{ borderStyle: 'none' }}>
                 <TextInputComponent
                   id='password'
                   type={type.PASSWORD}
@@ -150,16 +162,27 @@ export default function UserDeleteComponent() {
                   trigger={trigger}
                 />
               </fieldset>
-              <LoadingButton
-                type='submit'
-                variant='contained'
-                color='primary'
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                className={isSubmitting ? `cursor-progress` : ``}
-              >Confirmar</LoadingButton>
+              <div style={{
+                paddingBottom: '.8rem',
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}>
+                <LoadingButton
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  disabled={isSubmitting}
+                  loading={isSubmitting}
+                  className={isSubmitting ? `cursor-progress` : ``}
+                  sx={{ marginRight: '1rem' }}
+                >Confirmar</LoadingButton>
+                <Button
+                  variant='contained'
+                  onClick={handleClose}
+                >Cancelar</Button>
+              </div>
             </form>
-            <Button onClick={handleClose}>Cancelar</Button>
           </Box>
         </Fade>
       </Modal>

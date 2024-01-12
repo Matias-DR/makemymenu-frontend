@@ -8,26 +8,59 @@ export default function Home() {
 
   if (session.status === 'loading') return <main><p>Cargando...</p></main>
 
-  return <main className='h-full w-full'>
+  return <main className='flex flex-col h-full w-full'>
     <HeaderComponent />
     {
-      session.status === 'unauthenticated' &&
-      <>
-        <Link href='/user/auth/sign-in'>
-          <Button
-            type='button'
-            variant='contained'
-            color='primary'
-          >Iniciar Sesión</Button>
-        </Link>
-        <Link href='/user/auth/sign-up'>
-          <Button
-            type='button'
-            variant='contained'
-            color='primary'
-          >Registrarse</Button>
-        </Link>
-      </>
+      session.status === 'unauthenticated' ?
+        <div className='grow w-full flex flex-col place-content-evenly items-center'>
+          <Link
+            href='/user/auth/sign-in'
+            className='block w-96 h-24'
+          >
+            <Button
+              type='button'
+              variant='contained'
+              color='primary'
+              className='w-full h-full rounded-lg text-3xl'
+            >Iniciar Sesión</Button>
+          </Link>
+          <Link
+            href='/user/auth/sign-up'
+            className='block w-96 h-24'
+          >
+            <Button
+              type='button'
+              variant='contained'
+              color='primary'
+              className='w-full h-full rounded-lg text-3xl'
+            >Registrarse</Button>
+          </Link>
+        </div>
+        :
+        <div className='grow w-full flex flex-col place-content-evenly items-center'>
+          <Link
+            href='/recipe/create'
+            className='block w-96 h-24'
+          >
+            <Button
+              type='button'
+              variant='contained'
+              color='primary'
+              className='w-full h-full rounded-lg text-3xl'
+            >Crear receta</Button>
+          </Link>
+          <Link
+            href='/recipe/history'
+            className='block w-96 h-24'
+          >
+            <Button
+              type='button'
+              variant='contained'
+              color='primary'
+              className='w-full h-full rounded-lg text-3xl'
+            >Historial de recetas</Button>
+          </Link>
+        </div>
     }
   </main>
 }

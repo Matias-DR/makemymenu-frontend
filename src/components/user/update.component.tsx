@@ -31,17 +31,13 @@ import {
   JwtPayload,
   decode
 } from 'jsonwebtoken'
+import { css } from 'lib/constants'
 
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
 }
 
 export default function UserUpdateComponent() {
@@ -121,104 +117,144 @@ export default function UserUpdateComponent() {
       })
   }
 
-  return (
-    <div>
-      <Button
-        type='button'
-        variant='contained'
-        color='primary'
-        onClick={handleOpen}
-      >Modificar usuario</Button>
-      <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <form
-              noValidate
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <fieldset>
-                <TextInputComponent
-                  id='newEmail'
-                  type={type.EMAIL}
-                  label='Nuevo email'
-                  register={register}
-                  required={false}
-                  error={errors.newEmail}
-                  pattern={{ value: EMAIL_PATTERN, message: 'Email inválido' }}
-                  trigger={trigger}
-                />
-                <TextInputComponent
-                  id='newPassword'
-                  type={type.PASSWORD}
-                  label='Nueva contraseña'
-                  register={register}
-                  required={false}
-                  error={errors.newPassword}
-                  pattern={{ value: PASSWORD_PATTERN, message: 'Contraseña inválida' }}
-                  trigger={trigger}
-                />
-                <TextInputComponent
-                  id='newPasswordConfirmation'
-                  type={type.PASSWORD}
-                  label='Confirmación de nueva contraseña'
-                  register={register}
-                  required={watch('newPassword') !== undefined && watch('newPassword') !== ''}
-                  error={errors.newPasswordConfirmation}
-                  validate={(value: string) => value === watch('newPassword')
-                    || 'Las contraseñas no coinciden'}
-                  pattern={{ value: PASSWORD_PATTERN, message: 'Confirmación de contraseña inválida' }}
-                  trigger={trigger}
-                />
-                <TextInputComponent
-                  id='password'
-                  type={type.PASSWORD}
-                  label='Contraseña actual'
-                  register={register}
-                  required={
-                    watch('newPassword') !== '' && watch('newPassword') !== undefined && watch('newPassword') !== null
-                    || watch('newEmail') !== '' && watch('newEmail') !== undefined && watch('newEmail') !== null
-                    || watch('newPasswordConfirmation') !== '' && watch('newPasswordConfirmation') !== undefined && watch('newPasswordConfirmation') !== null ? 'Ingrese la contraseña actual' : false
-                  }
-                  error={errors.password}
-                  pattern={{ value: PASSWORD_PATTERN, message: 'Contraseña inválida' }}
-                  trigger={trigger}
-                />
-              </fieldset>
-              <LoadingButton
-                type='submit'
-                variant='contained'
-                color='primary'
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                className={isSubmitting ? `cursor-progress` : ``}
-              >Actualizar</LoadingButton>
-            </form>
-            <Button onClick={handleClose}>Volver</Button>
+  return <div>
+    <Button
+      type='button'
+      color='primary'
+      onClick={handleOpen}
+    >Modificar usuario</Button>
+    <Modal
+      aria-labelledby='transition-modal-title'
+      aria-describedby='transition-modal-description'
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500,
+        },
+      }}
+    >
+      <Fade in={open}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}>
+          <Box sx={{
+            ...style,
+            display: 'flex',
+            flexDirection: 'column',
+            placeContent: 'space-evenly',
+            alignItems: 'center',
+            paddingTop: '.5rem',
+          }}>
+            <h3 style={{
+              margin: '0',
+              fontSize: '2rem',
+            }} >ACTUALIZACIÓN</h3>
+            <div style={{
+              ...css.blackTransparent,
+              display: 'flex',
+              flexDirection: 'column',
+              placeContent: 'space-evenly',
+              alignItems: 'center',
+            }}>
+              <form
+                noValidate
+                onSubmit={handleSubmit(onSubmit)}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  placeContent: 'space-evenly',
+                  alignItems: 'center',
+                  paddingTop: '.4rem',
+                }}>
+                <fieldset style={{ borderStyle: 'none' }}>
+                  <TextInputComponent
+                    id='newEmail'
+                    type={type.EMAIL}
+                    label='Nuevo email'
+                    register={register}
+                    required={false}
+                    error={errors.newEmail}
+                    pattern={{ value: EMAIL_PATTERN, message: 'Email inválido' }}
+                    trigger={trigger}
+                    sx={{ marginBottom: '.7rem' }}
+                  />
+                  <TextInputComponent
+                    id='newPassword'
+                    type={type.PASSWORD}
+                    label='Nueva contraseña'
+                    register={register}
+                    required={false}
+                    error={errors.newPassword}
+                    pattern={{ value: PASSWORD_PATTERN, message: 'Contraseña inválida' }}
+                    trigger={trigger}
+                    sx={{ marginBottom: '.7rem' }}
+                  />
+                  <TextInputComponent
+                    id='newPasswordConfirmation'
+                    type={type.PASSWORD}
+                    label='Confirmación de nueva contraseña'
+                    register={register}
+                    required={watch('newPassword') !== undefined && watch('newPassword') !== ''}
+                    error={errors.newPasswordConfirmation}
+                    validate={(value: string) => value === watch('newPassword')
+                      || 'Las contraseñas no coinciden'}
+                    pattern={{ value: PASSWORD_PATTERN, message: 'Confirmación de contraseña inválida' }}
+                    trigger={trigger}
+                    sx={{ marginBottom: '.7rem' }}
+                  />
+                  <TextInputComponent
+                    id='password'
+                    type={type.PASSWORD}
+                    label='Contraseña actual'
+                    register={register}
+                    required={
+                      watch('newPassword') !== '' && watch('newPassword') !== undefined && watch('newPassword') !== null
+                        || watch('newEmail') !== '' && watch('newEmail') !== undefined && watch('newEmail') !== null
+                        || watch('newPasswordConfirmation') !== '' && watch('newPasswordConfirmation') !== undefined && watch('newPasswordConfirmation') !== null ? 'Ingrese la contraseña actual' : false
+                    }
+                    error={errors.password}
+                    pattern={{ value: PASSWORD_PATTERN, message: 'Contraseña inválida' }}
+                    trigger={trigger}
+                  />
+                </fieldset>
+                <div style={{
+                  paddingBottom: '.8rem',
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}>
+                  <LoadingButton
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                    disabled={isSubmitting}
+                    loading={isSubmitting}
+                    className={isSubmitting ? `cursor-progress` : ``}
+                    sx={{ marginRight: '1rem' }}
+                  >Actualizar</LoadingButton>
+                  <Button variant='contained' onClick={handleClose}>Volver</Button>
+                </div>
+              </form>
+            </div>
           </Box>
-        </Fade>
-      </Modal>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={closeSnackbar}
-        message={snackbarMessage}
-      >
-        <Alert onClose={closeSnackbar} severity={status} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </div>
-  )
+        </div>
+      </Fade>
+    </Modal>
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={closeSnackbar}
+      message={snackbarMessage}
+      sx={{ display: 'absolute' }}
+    >
+      <Alert onClose={closeSnackbar} severity={status} sx={{ width: '100%' }}>
+        {snackbarMessage}
+      </Alert>
+    </Snackbar>
+  </div>
 }

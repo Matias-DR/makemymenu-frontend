@@ -1,25 +1,61 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 @import 'tailwindcss/components';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300&family=Outfit:wght@100&display=swap');
 
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: 'Nabla';
+  src: url('./fonts/Nabla-Regular-VariableFont_EDPT,EHLT.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 900;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
+@font-face {
+  font-family: 'RubikDoodleShadow';
+  src: url('./fonts/RubikDoodleShadow-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 900;
+}
 
-* {
+@font-face {
+  font-family: 'RubikMonoOne';
+  src: url('./fonts/RubikMonoOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'JacquesFrancoisShadow';
+  src: url('./fonts/JacquesFrancoisShadow-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'BungeeShade';
+  src: url('./fonts/BungeeShade-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'Bungee';
+  src: url('./fonts/Bungee-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 900;
+}
+
+/* * {
   font-family: 'Kalam', sans-serif;
-}
+} */
 
 body {
   width: 100vw;
@@ -34,7 +70,32 @@ h3,
 h4,
 h5,
 h6 {
-  color: #e46161
+  color: #e46161;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Nabla';
+  font-weight: 900;
+}
+
+h4,
+h5,
+h6 {
+  font-family: 'sans-serif';
+  font-weight: 900;
+  color: white
+}
+
+@keyframes moveBackground {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
 }
 
 #__next {
@@ -43,4 +104,35 @@ h6 {
   /* background: radial-gradient(circle at -8.9% 51.2%, rgb(255, 124, 0) 0%, rgb(255, 124, 0) 15.9%, rgb(255, 163, 77) 15.9%, rgb(255, 163, 77) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%); */
   background-color: #16001f;
   background-image: url('https://www.transparenttextures.com/patterns/food.png');
+  animation: moveBackground 100s linear infinite;
+}
+
+.gray-scrollbar {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.gray-scrollbar::-webkit-scrollbar {
+  height: 1px;
+  width: 0.5rem;
+  position: absolute;
+  top: 0;
+}
+
+.gray-scrollbar::-webkit-scrollbar-button {
+  height: 3px;
+}
+
+.gray-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+}
+
+.gray-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
+}
+
+.gray-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
 }

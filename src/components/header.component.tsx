@@ -18,9 +18,12 @@ import UserUpdateComponent from './user/update.component'
 import UserDeleteComponent from './user/delete.component'
 import UserSignOutComponent from './user/sign-out.component'
 import Link from 'next/link'
+import { Button } from '@mui/material'
+import { useRouter } from 'next/router'
 
 export default function HeaderComponent() {
   const session = useSession()
+  const router = useRouter()
 
   const [userMenu, setUserMenu] = useState<null | HTMLElement>(null)
   const [menu, setMenu] = useState<null | HTMLElement>(null)
@@ -51,8 +54,16 @@ export default function HeaderComponent() {
     setMenu(null)
   }
 
+  const goToCreateRecipe = () => {
+    router.push('/recipe/create')
+  }
+
+  const goToHistory = () => {
+    router.push('/recipe/history')
+  }
+
   return <>{
-    session.status === 'authenticated' && <Box sx={{ flexGrow: 1 }}>
+    session.status === 'authenticated' && <Box>
       <AppBar
         position='static'
         sx={{
@@ -84,12 +95,29 @@ export default function HeaderComponent() {
             }}
             open={Boolean(menu)}
             onClose={handleMenuClose}
+            className='flex flex-col justify-center items-center'
           >
-            <MenuItem onClick={handleMenuClose}>
-              <Link href='/recipe/create'>Crear una receta</Link>
+            <MenuItem
+              onClick={handleMenuClose}
+              sx={{
+                padding: '1 !important',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Button onClick={goToCreateRecipe}>Crear una receta</Button>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <Link href='/recipe/history'>Historial de recetas</Link>
+            <MenuItem
+              onClick={handleMenuClose}
+              sx={{
+                padding: '1 !important',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Button onClick={goToHistory}>Historial de recetas</Button>
             </MenuItem>
           </Menu>
           <Typography
@@ -98,7 +126,10 @@ export default function HeaderComponent() {
             sx={{ flexGrow: 1 }}
             className='font-bold'
           >
-            MakeMyMenu
+            <Link
+              href='/'
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >MakeMyMenu</Link>
           </Typography>
           {/* ↑ LADO IZQUIERDO ↑ */}
           {/* ↓ LADO DERECHO ↓ */}
@@ -129,13 +160,40 @@ export default function HeaderComponent() {
               open={Boolean(userMenu)}
               onClose={handleUserMenuClose}
             >
-              {session!.data.provider === 'credentials' && <MenuItem onClick={handleUserMenuClose}>
-                <UserUpdateComponent />
-              </MenuItem>}
-              <MenuItem onClick={handleUserMenuClose}>
+              {
+                session!.data.provider === 'credentials' &&
+                <MenuItem
+                  onClick={handleUserMenuClose}
+                  sx={{
+                    padding: '1 !important',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <UserUpdateComponent />
+                </MenuItem>
+              }
+              <MenuItem
+                onClick={handleUserMenuClose}
+                sx={{
+                  padding: '1 !important',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
                 <UserDeleteComponent />
               </MenuItem>
-              <MenuItem onClick={handleUserMenuClose}>
+              <MenuItem
+                onClick={handleUserMenuClose}
+                sx={{
+                  padding: '1 !important',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
                 <UserSignOutComponent />
               </MenuItem>
             </Menu>

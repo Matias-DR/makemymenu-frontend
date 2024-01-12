@@ -24,7 +24,7 @@ interface Pattern {
 }
 
 interface Props {
-  variant: 'filled' | 'outlined' | 'standard'
+  variant?: 'filled' | 'outlined' | 'standard'
   className?: string
   id: string
   type: type
@@ -42,6 +42,7 @@ interface Props {
   labelColor?: string
   placeholderColor?: string
   textAlign?: 'center' | 'left' | 'right'
+  sx?: any
 }
 
 export const TextInputComponent = ({
@@ -62,7 +63,8 @@ export const TextInputComponent = ({
   borderColor = '#FFFFFF',
   labelColor = '#FFFFFF',
   placeholderColor = '#FFFFFF',
-  textAlign = 'left'
+  textAlign = 'left',
+  sx = {}
 }: Props) => {
   const [hasBlurred, setHasBlurred] = useState(false)
 
@@ -86,13 +88,14 @@ export const TextInputComponent = ({
     value={value}
     placeholder={placeholder}
     error={!!error}
-    helperText={<>{error && error.message}</>}
+    helperText={<p className='absolute top-11 left-0'>{error && error.message}</p>}
     onBlur={() => {
       setHasBlurred(true)
       trigger && trigger(id)
     }}
     fullWidth
     sx={{
+      ...sx,
       '& .MuiInput-input': { borderColor },
       '& .MuiTextField-root': { borderColor },
       '& .MuiOutlinedInput-root': {

@@ -16,17 +16,7 @@ import {
 import { TextInputComponent, type } from 'components/inputs'
 import { useForm } from 'react-hook-form'
 import { Button, Grid } from '@mui/material'
-
-const css = {
-  transparent: {
-    background: 'rgba( 255, 255, 255, 0.15 )',
-    boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
-    backdropFilter: 'blur( 11.5px )',
-    WebkitBackdropFilter: 'blur( 11.5px )',
-    borderRadius: '10px',
-    border: '1px solid rgba( 255, 255, 255, 0.18 )'
-  }
-}
+import { css } from 'lib/constants'
 
 export default function Home() {
   const session = useSession()
@@ -94,11 +84,11 @@ export default function Home() {
 
   if (session.status === 'loading') return <main><p>Cargando...</p></main>
 
-  return <main className='h-full w-full'>
+  return <main className='h-full w-full flex flex-col'>
     <HeaderComponent />
 
     {/* full-page */}
-    <div className='w-full h-5/6 flex flex-col items-center'>
+    <div className='w-full grow flex flex-col items-center'>
       {/* editable-recipe-title-from-api */}
       <div className='w-11/12'>
         <TextInputComponent
@@ -116,10 +106,10 @@ export default function Home() {
         {/* recipe-container */}
         <div className='w-full h-5/6 mb-2' style={css.transparent}>
           {/* recipe-text */}
-          <p className='p-2 text-white'>receta...</p>
+          <p className='m-0 px-2 py-1 text-white'>receta...</p>
         </div>
         {/* options-container */}
-        <Grid container className='w-full h-auto'>
+        <Grid container className='w-full grow'>
           {/* regenerate */}
           <Grid xs={12} sm={6} md={3} className='mb-2 flex flex-col justify-center items-center'>
             <Button
@@ -145,7 +135,7 @@ export default function Home() {
             >Crear otra receta</Button>
           </Grid>
           {/* delete */}
-          <Grid xs={12} sm={6} md={3} className='flex flex-col justify-center items-center'>
+          <Grid xs={12} sm={6} md={3} className='mb-2 flex flex-col justify-center items-center'>
             <Button
               variant='contained'
               color='error'

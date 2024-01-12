@@ -18,7 +18,7 @@ import {
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { TextInputComponent, type } from 'components/inputs'
-import { EMAIL_PATTERN, PASSWORD_PATTERN } from 'lib/constants'
+import { EMAIL_PATTERN, PASSWORD_PATTERN, css } from 'lib/constants'
 
 export default function SignIn() {
   const router = useRouter()
@@ -78,11 +78,12 @@ export default function SignIn() {
 
   return <main className='w-full h-full flex justify-around items-center flex-col'>
     <div className='w-11/12 max-w-screen-sm flex justify-center items-center flex-col'>
-      <h2 className='mb-2' >INICIO DE SESIÓN</h2>
+      <h2 className='mb-2 text-4xl' >INICIO DE SESIÓN</h2>
       <form
-        className='flex justify-center items-center flex-col divide-slate-400 bg-orange-300 rounded-md bg-opacity-25 border-solid border-2 border-red-500 pb-3'
+        className='flex justify-center items-center flex-col divide-slate-400 rounded-md border-solid border-2 border-red-500 pb-3'
         onSubmit={handleSubmit(onSubmit)}
         noValidate
+        style={css.blackTransparent}
       >
         <fieldset className='border-none'>
           <TextInputComponent
@@ -98,6 +99,7 @@ export default function SignIn() {
             }}
             validate={() => true}
             trigger={trigger}
+            className='mb-5'
           />
           <TextInputComponent
             id='password'
@@ -111,6 +113,7 @@ export default function SignIn() {
               message: 'Contraseña inválida. Debe contener entre 8 a 64 caracteres.'
             }}
             trigger={trigger}
+            className='mb-5'
           />
         </fieldset>
         <LoadingButton
@@ -125,25 +128,28 @@ export default function SignIn() {
           className='mt-3'
           href='/user/auth/sign-up'
         >
-          → Regístrese aquí ←
+          <Button>→ Regístrese aquí ←</Button>
         </Link>
       </form>
-        <fieldset className='flex justify-center items-center flex-col divide-slate-400 bg-orange-300 rounded-md bg-opacity-25 border-solid border-2 border-red-500 mt-3'>
-          <legend><h4 className='m-0'>O puede ingresar con</h4></legend>
-          <Button
-            className='mt-3'
-            type='button'
-            variant='contained'
-            color='primary'
-            onClick={() => signIn(
-              'google',
-              {
-                callbackUrl: '/',
-                redirect: true
-              }
-            )}
-          >Google</Button>
-        </fieldset>
+      <fieldset
+        className='flex justify-center items-center flex-col divide-slate-400 rounded-md border-solid border-2 border-red-500 mt-3'
+        style={css.blackTransparent}
+      >
+        <legend><h4 className='m-0'>O puede ingresar con</h4></legend>
+        <Button
+          className='mt-3'
+          type='button'
+          variant='contained'
+          color='primary'
+          onClick={() => signIn(
+            'google',
+            {
+              callbackUrl: '/',
+              redirect: true
+            }
+          )}
+        >Google</Button>
+      </fieldset>
     </div>
     <Snackbar
       open={open}
