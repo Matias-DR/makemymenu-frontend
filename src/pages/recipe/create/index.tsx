@@ -90,7 +90,8 @@ export default function Home() {
 
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    formState: { errors }
   } = useForm()
 
   const dispatch = useDispatch()
@@ -229,6 +230,7 @@ export default function Home() {
   })
 
   const addCustomIngredient = ({ customIngredient }: any) => {
+    console.log('llega a addCustomIngredient', customIngredient)
     if (customIngredient === '') return
     const ingredientsSelected = Object.keys(ingredients).filter((key: string) => ingredients[key])
     if (ingredientsSelected.some(
@@ -299,6 +301,7 @@ export default function Home() {
         open={options}
         onClose={closeOptions}
         closeAfterTransition
+        keepMounted
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: {
@@ -311,9 +314,10 @@ export default function Home() {
             <h3 style={{
               margin: '0',
               fontSize: '2rem',
-            }} >Ingredientes personalizados</h3>
+            }}>Ingredientes personalizados</h3>
             <form
               className='flex justify-center items-center flex-col divide-slate-400 bg-orange-300 rounded-md bg-opacity-25 border-solid border-2 border-red-500 pb-3'
+              // no toma el valor del input
               onSubmit={handleSubmit(addCustomIngredient)}
               noValidate
               style={{
@@ -331,6 +335,7 @@ export default function Home() {
                   label='Ingrediente/s'
                   register={register}
                   required={true}
+                  error={errors.customIngredient}
                   className='mb-2'
                 />
               </fieldset>
@@ -338,7 +343,7 @@ export default function Home() {
                 type='submit'
                 variant='contained'
                 color='primary'
-              >Agregar</Button>
+              >Agregar / Eliminar</Button>
             </form>
           </Box>
         </Fade>

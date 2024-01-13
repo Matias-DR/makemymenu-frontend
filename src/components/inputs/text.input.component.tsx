@@ -44,6 +44,9 @@ interface Props {
   placeholderColor?: string
   textAlign?: 'center' | 'left' | 'right'
   sx?: any
+  inputFontFamily?: string
+  placeHolederFontFamily?: string
+  labelFontFamily?: string
 }
 
 export const TextInputComponent = ({
@@ -66,57 +69,90 @@ export const TextInputComponent = ({
   labelColor = '#FFFFFF',
   placeholderColor = '#FFFFFF',
   textAlign = 'left',
-  sx = {}
+  sx = {},
+  inputFontFamily = 'sans-serif',
+  placeHolederFontFamily = 'sans-serif',
+  labelFontFamily = 'sans-serif'
 }: Props) => {
   const [hasBlurred, setHasBlurred] = useState(false)
 
   useEffect(() => { }, [])
 
-  return <TextField
-    color='warning'
-    variant={variant}
-    className={`mt-2 ${className}`}
-    id={id}
-    type={type}
-    label={label}
-    {...(register && register(id, {
-      required,
-      validate,
-      pattern,
-      onChange: () => {
-        if (hasBlurred) trigger && trigger(id)
-      }
-    }))}
-    value={value}
-    onChange={onChange}
-    placeholder={placeholder}
-    error={!!error}
-    helperText={<p className='absolute top-11 left-0'>{error && error.message}</p>}
-    onBlur={() => {
-      setHasBlurred(true)
-      trigger && trigger(id)
-    }}
-    fullWidth
-    sx={{
-      ...sx,
-      '& .MuiInput-input': { borderColor },
-      '& .MuiTextField-root': { borderColor },
-      '& .MuiOutlinedInput-root': {
-        '& fieldset': { borderColor },
-        '&:hover fieldset': { borderColor },
-        '&.Mui-focused fieldset': { borderColor },
-      },
-      '& .MuiInputBase-input': { textAlign },
-      '& .MuiInput-underline:after': { borderBottomColor: borderColor },
-      '& .MuiInput-underline:before': { borderBottomColor: borderColor },
-      '& label': { color: labelColor },
-      '& label.Mui-focused': { color: textColor },
-      '& input': { color: textColor },
-      '& input::placeholder': { color: placeholderColor },
-      '& input:focus': { color: textColor },
-      '& input:focus::placeholder': { color: placeholderColor },
-      '& input:focus-visible': { color: textColor },
-      '& input:focus-visible::placeholder': { color: placeholderColor }
-    }}
-  />
+  const css = {
+    ...sx,
+    '& .MuiInput-input': { borderColor, fontFamily: inputFontFamily },
+    '& .MuiTextField-root': { borderColor, fontFamily: inputFontFamily },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor },
+      '&:hover fieldset': { borderColor },
+      '&.Mui-focused fieldset': { borderColor },
+    },
+    '& .MuiInputBase-input': { textAlign, fontFamily: inputFontFamily },
+    '& .MuiInput-underline:after': { borderBottomColor: borderColor },
+    '& .MuiInput-underline:before': { borderBottomColor: borderColor },
+    '& label': { color: labelColor, fontFamily: labelFontFamily },
+    '& label.Mui-focused': { color: textColor, fontFamily: labelFontFamily },
+    '& input': { color: textColor, fontFamily: inputFontFamily },
+    '& input::placeholder': { color: placeholderColor, fontFamily: placeHolederFontFamily },
+    '& input:focus': { color: textColor, fontFamily: placeHolederFontFamily },
+    '& input:focus::placeholder': { color: placeholderColor, fontFamily: placeHolederFontFamily },
+    '& input:focus-visible': { color: textColor, fontFamily: placeHolederFontFamily },
+    '& input:focus-visible::placeholder': { color: placeholderColor, fontFamily: placeHolederFontFamily }
+  }
+
+  return onChange !== null && onChange !== undefined ?
+    <TextField
+      color='warning'
+      variant={variant}
+      className={`mt-2 relative ${className}`}
+      id={id}
+      type={type}
+      label={label}
+      {...(register && register(id, {
+        required,
+        validate,
+        pattern,
+        onChange: () => {
+          if (hasBlurred) trigger && trigger(id)
+        }
+      }))}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      error={!!error}
+      helperText={<p className='absolute top-11 left-0'>{error && error.message}</p>}
+      onBlur={() => {
+        setHasBlurred(true)
+        trigger && trigger(id)
+      }}
+      fullWidth
+      sx={css}
+    />
+    :
+    <TextField
+      color='warning'
+      variant={variant}
+      className={`mt-2 relative ${className}`}
+      id={id}
+      type={type}
+      label={label}
+      {...(register && register(id, {
+        required,
+        validate,
+        pattern,
+        onChange: () => {
+          if (hasBlurred) trigger && trigger(id)
+        }
+      }))}
+      value={value}
+      placeholder={placeholder}
+      error={!!error}
+      helperText={<p className='absolute top-11 left-0'>{error && error.message}</p>}
+      onBlur={() => {
+        setHasBlurred(true)
+        trigger && trigger(id)
+      }}
+      fullWidth
+      sx={css}
+    />
 }

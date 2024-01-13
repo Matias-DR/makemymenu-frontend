@@ -97,9 +97,11 @@ export default function Home() {
           variant='standard'
           id='recipe-title'
           register={register}
-          placeholder='TÍTULO DE LA RECETA'
+          placeholder='Ensalada de Verano Fresca'
           type={type.TEXT}
           textAlign='center'
+          placeHolederFontFamily='Nabla'
+          inputFontFamily='Nabla'
         />
       </div>
       {/* recipe-&-options-container */}
@@ -107,7 +109,9 @@ export default function Home() {
         {/* recipe-container */}
         <div className='w-full h-5/6 mb-2' style={css.transparent}>
           {/* recipe-text */}
-          <p className='m-0 px-2 py-1 text-white'>receta...</p>
+          <p className='m-0 px-2 py-1 text-white typewriter-text'>
+            Ingredientes: Lechuga, tomate, pepino, aceitunas, aderezo de limón. Instrucciones: Corta y mezcla todos los ingredientes. Aliña con aderezo de limón.
+          </p>
         </div>
         {/* options-container */}
         <Grid container className='w-full grow'>

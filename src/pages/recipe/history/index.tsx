@@ -62,12 +62,18 @@ const RecipeComponent = ({
               }}
               required={true}
               className='!m-0 !ml-2 p-0 mx-2 !mt-[-.75rem] w-11/12'
+              placeHolederFontFamily='Nabla'
+              inputFontFamily='Nabla'
             />
         }
       </div>
       {/* recipe */}
       <div className='flex grow w-full gray-scrollbar'>
-        <p className='grow w-full m-0 px-2 text-white text-lg break-all'>{recipe}</p>
+        <p className='grow w-full m-0 px-2 text-white text-lg break-all'>
+          Ingredientes: {ingredients}
+          <br />
+          Instrucciones: {recipe}
+        </p>
       </div>
     </div>
     {/* options-container */}

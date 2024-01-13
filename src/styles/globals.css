@@ -72,8 +72,25 @@
   }
 }
 
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 .loading {
   animation: fadeInOut 0.5s infinite;
+}
+
+.typewriter-text {
+  font-family: 'monospace', sans-serif;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 6s steps(40);
 }
 
 /* * {
