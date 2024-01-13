@@ -167,7 +167,7 @@ export default function History({ recipeList }: Props) {
   return <main className='h-full w-full flex flex-col'>
     {session.status === 'authenticated' && <HeaderComponent />}
 
-    {session.status === 'authenticated' && <div className='grow w-full overflow-y-scroll'>
+    {session.status === 'authenticated' && <div className='grow w-full gray-scrollbar'>
       {
         recipes
           .map((
