@@ -128,7 +128,11 @@ export default function HeaderComponent() {
           >
             <Link
               href='/'
-              style={{ textDecoration: 'none', color: 'inherit' }}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                fontFamily: 'Nabla'
+              }}
             >MakeMyMenu</Link>
           </Typography>
           {/* ↑ LADO IZQUIERDO ↑ */}

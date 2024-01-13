@@ -83,7 +83,7 @@ export default function Home() {
     }
   }, [session])
 
-  if (session.status === 'loading') return <LoadingWindowComponent/>
+  if (session.status !== 'authenticated') return <LoadingWindowComponent/>
 
   return <main className='h-full w-full flex flex-col'>
     <HeaderComponent />

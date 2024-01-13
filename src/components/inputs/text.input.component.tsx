@@ -29,7 +29,8 @@ interface Props {
   id: string
   type: type
   label?: string
-  register: UseFormRegister<any>
+  register?: UseFormRegister<any>
+  onChange?: (data: any) => void
   placeholder?: string
   value?: string
   required?: boolean | string
@@ -52,6 +53,7 @@ export const TextInputComponent = ({
   type,
   label,
   register,
+  onChange,
   placeholder,
   value,
   error,
@@ -86,6 +88,7 @@ export const TextInputComponent = ({
       }
     }))}
     value={value}
+    onChange={onChange}
     placeholder={placeholder}
     error={!!error}
     helperText={<p className='absolute top-11 left-0'>{error && error.message}</p>}

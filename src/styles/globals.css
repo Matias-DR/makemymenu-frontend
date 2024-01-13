@@ -73,7 +73,7 @@
 }
 
 .loading {
-  animation: fadeInOut 2s infinite;
+  animation: fadeInOut 0.5s infinite;
 }
 
 /* * {

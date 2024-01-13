@@ -13,7 +13,8 @@ import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Unstable_Grid2'
 import {
   FLATTENED_INGREDIENTS,
-  INGREDIENTS
+  INGREDIENTS,
+  css
 } from 'lib/constants'
 import {
   Modal,
@@ -52,11 +53,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
 }
 
 interface Ingredients { [index: string]: boolean }
@@ -105,7 +101,7 @@ export default function Home() {
     }
   }, [session, ingredients])
 
-  if (session.status === 'loading') return <LoadingWindowComponent />
+  if (session.status !== 'authenticated') return <LoadingWindowComponent />
 
   let meatIngredients: JSX.Element[] = []
   Object.keys(INGREDIENTS.meats).
@@ -312,18 +308,30 @@ export default function Home() {
       >
         <Fade in={options}>
           <Box sx={style}>
+            <h3 style={{
+              margin: '0',
+              fontSize: '2rem',
+            }} >Ingredientes personalizados</h3>
             <form
               className='flex justify-center items-center flex-col divide-slate-400 bg-orange-300 rounded-md bg-opacity-25 border-solid border-2 border-red-500 pb-3'
               onSubmit={handleSubmit(addCustomIngredient)}
               noValidate
+              style={{
+                ...css.blackTransparent,
+                padding: '1rem',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
             >
-              <fieldset className='border-none'>
+              <fieldset style={{ border: 'none', width: '100%' }}>
                 <TextInputComponent
                   id='customIngredient'
                   type={type.TEXT}
                   label='Ingrediente/s'
                   register={register}
                   required={true}
+                  className='mb-2'
                 />
               </fieldset>
               <Button
