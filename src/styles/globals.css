@@ -88,8 +88,6 @@
 .typewriter-text {
   font-family: 'monospace', sans-serif;
   font-size: 18px;
-  white-space: nowrap;
-  overflow: hidden;
   animation: typing 6s steps(40);
 }
 

@@ -11,12 +11,10 @@ import {
 import { Button } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import axios from 'axios'
 import { JwtPayload, decode } from 'jsonwebtoken'
 import LoadingWindowComponent from 'components/loading-window.component'
 import SaveAltIcon from '@mui/icons-material/SaveAlt'
 import { TextInputComponent, type } from 'components/inputs'
-import { useForm } from 'react-hook-form'
 
 interface RecipeComponentInterface {
   id: string
@@ -24,7 +22,7 @@ interface RecipeComponentInterface {
   ingredients: string
   recipe: string
   handleModify: (id: string, title: string) => void
-  handleDelete: () => void
+  handleDelete: (id: string) => void
 }
 
 const RecipeComponent = ({
@@ -99,7 +97,7 @@ const RecipeComponent = ({
       <Button
         variant='contained'
         color='error'
-        onClick={handleDelete}
+        onClick={() => { handleDelete(id) }}
       ><DeleteIcon /></Button>
     </div>
   </div>
@@ -166,8 +164,9 @@ export default function History({ recipeList }: Props) {
     // when save is clicked, change button to modify
   }
 
-  const handleDelete = () => {
+  const handleDelete = (id: string) => {
     // axios.delete('api', id)
+    setRecipes(recipes.filter((recipe: Recipe) => recipe.id !== id))
   }
 
   return <main className='h-full w-full flex flex-col'>
@@ -201,7 +200,7 @@ export async function getServerSideProps(context: any) {
     id: '0',
     title: 'Ensalada de Verano Fresca',
     ingredients: 'Lechuga, tomate, pepino, aceitunas, aderezo de limón.',
-    recipe: 'Corta y mezcla todos los ingredientes. Aliña con aderezo de limón.'
+    recipe: 'Lava y seca la lechuga, luego córtala en trozos. Corta los tomates y el pepino en rodajas o trozos pequeños. Si las aceitunas tienen hueso, quítales el hueso y córtalas por la mitad. En un tazón, combina la lechuga, los tomates, el pepino y las aceitunas. Rocía el aderezo de limón sobre la ensalada según tu preferencia. Mezcla los ingredientes para cubrirlos con el aderezo. Sirve la ensalada en platos individuales o en un tazón grande.'
   }, {
     id: '1', title: 'Pollo al Curry Fácil',
     ingredients: 'Pechuga de pollo, curry, cebolla, leche de coco.',

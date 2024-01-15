@@ -47,6 +47,7 @@ interface Props {
   inputFontFamily?: string
   placeHolederFontFamily?: string
   labelFontFamily?: string
+  onBlur?: () => void
 }
 
 export const TextInputComponent = ({
@@ -72,7 +73,8 @@ export const TextInputComponent = ({
   sx = {},
   inputFontFamily = 'sans-serif',
   placeHolederFontFamily = 'sans-serif',
-  labelFontFamily = 'sans-serif'
+  labelFontFamily = 'sans-serif',
+  onBlur
 }: Props) => {
   const [hasBlurred, setHasBlurred] = useState(false)
 
@@ -124,6 +126,7 @@ export const TextInputComponent = ({
       onBlur={() => {
         setHasBlurred(true)
         trigger && trigger(id)
+        onBlur && onBlur()
       }}
       fullWidth
       sx={css}
